@@ -17,7 +17,6 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS data (
                     image_path TEXT
                   )''')
 
-# Création des tables pour les ensembles d'enrôlement et de reconnaissance
 cursor.execute('''CREATE TABLE IF NOT EXISTS enrollment_data (
                     id INTEGER PRIMARY KEY,
                     subject_id TEXT,
@@ -31,6 +30,11 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS recognition_data (
                     eye_side TEXT,
                     image_path TEXT
                   )''')
+
+# Supprimer les données existantes dans les tables d'enrôlement et de reconnaissance
+cursor.execute('''DELETE FROM data''')
+cursor.execute('''DELETE FROM enrollment_data''')
+cursor.execute('''DELETE FROM recognition_data''')
 
 # Fonction pour insérer des données dans la table data
 def insert_data(subject_id, eye_side, image_path):
@@ -65,7 +69,7 @@ data_count = cursor.fetchone()[0]
 enrollment_count = int(data_count * 0.7)  # 70% pour l'enrôlement
 recognition_count = data_count - enrollment_count  # 30% pour la reconnaissance
 
-# Récupération des données d'enrôlement
+# Récupération des données d'enrôlement et de reconnaissance
 cursor.execute('''SELECT * FROM data''')
 data = cursor.fetchall()
 
@@ -74,13 +78,13 @@ random.shuffle(data)
 enrollment_set = data[:enrollment_count]
 recognition_set = data[enrollment_count:]
 
-# Insertion des données de reconnaissance
-for data in enrollment_set:
-    insert_enrollment_data(data[1], data[2], data[3])
+# Insertion des données d'enrôlement
+for enrollment_data in enrollment_set:
+    insert_enrollment_data(enrollment_data[1], enrollment_data[2], enrollment_data[3])
 
 # Insertion des données de reconnaissance
-for data in recognition_set:
-    insert_recognition_data(data[1], data[2], data[3])
+for recognition_data in recognition_set:
+    insert_recognition_data(recognition_data[1], recognition_data[2], recognition_data[3])
 
 # Fermer la connexion à la base de données
 conn.close()
