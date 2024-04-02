@@ -17,5 +17,7 @@
         "Récupération",
         "Séparation",
         "toutes"
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true
 }

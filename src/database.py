@@ -1,90 +1,61 @@
-import sqlite3
-import random
 import os
+import cv2
+import sqlite3
+import re
 
-# Connexion à la base de données
-conn = sqlite3.connect('iris_database.db')
+# Chemin vers le répertoire contenant les images
+base_path = "./iris_images"
+
+# Créer une connexion à la base de données SQLite
+conn = sqlite3.connect("iris_database.db")
 cursor = conn.cursor()
 
-# Chemin vers le dossier contenant les images d'iris
-image_folder = 'iris_images'
+# Créer une table pour stocker les données si elle n'existe pas déjà
+cursor.execute('''CREATE TABLE IF NOT EXISTS iris_data
+                (iris_id TEXT, side TEXT, n_pos TEXT, image_name TEXT, image_path TEXT)''')
 
-# Création des tables pour data les ensembles d'enrôlement et de reconnaissance
-cursor.execute('''CREATE TABLE IF NOT EXISTS data (
-                    id INTEGER PRIMARY KEY,
-                    subject_id TEXT,
-                    eye_side TEXT,
-                    image_path TEXT
-                  )''')
+# Parcourir les répertoires et les fichiers
+for folder_name in os.listdir(base_path):
+    if os.path.isdir(os.path.join(base_path, folder_name)):
+        for subfolder_name in os.listdir(os.path.join(base_path, folder_name)):
+            if os.path.isdir(os.path.join(base_path, folder_name, subfolder_name)):
+                for file_name in os.listdir(os.path.join(base_path, folder_name, subfolder_name)):
+                    # Créer le chemin complet de l'image
+                    image_path = os.path.join(base_path, folder_name, subfolder_name, file_name)
+                    
+                    # Utiliser une expression régulière pour extraire des informations du nom de fichier
+                    match = re.match(r"(\d+)([LR])_(\d+)\.png", file_name)
+                    if match:
+                        iris_id, side, position = match.groups()
+                        
+                        # Vérifier si les données existent déjà dans la base de données
+                        cursor.execute('''SELECT * FROM iris_data WHERE iris_id=? AND side=? AND n_pos=?''',
+                                       (iris_id, "left" if side == "L" else "right", position))
+                        existing_data = cursor.fetchone()
+                        
+                        # Si les données n'existent pas déjà, les ajouter à la base de données
+                        if not existing_data:
+                            cursor.execute('''INSERT INTO iris_data VALUES (?, ?, ?, ?, ?)''',
+                                           (iris_id, "left" if side == "L" else "right", position, file_name, image_path))
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS enrollment_data (
-                    id INTEGER PRIMARY KEY,
-                    subject_id TEXT,
-                    eye_side TEXT,
-                    image_path TEXT
-                  )''')
-
-cursor.execute('''CREATE TABLE IF NOT EXISTS recognition_data (
-                    id INTEGER PRIMARY KEY,
-                    subject_id TEXT,
-                    eye_side TEXT,
-                    image_path TEXT
-                  )''')
-
-# Supprimer les données existantes dans les tables d'enrôlement et de reconnaissance
-cursor.execute('''DELETE FROM data''')
-cursor.execute('''DELETE FROM enrollment_data''')
-cursor.execute('''DELETE FROM recognition_data''')
-
-# Fonction pour insérer des données dans la table data
-def insert_data(subject_id, eye_side, image_path):
-    cursor.execute('''INSERT INTO data (subject_id, eye_side, image_path)
-                      VALUES (?, ?, ?)''', (subject_id, eye_side, image_path))
-    conn.commit()
-
-# Fonction pour insérer des données dans la table d'enrôlement
-def insert_enrollment_data(subject_id, eye_side, image_path):
-    cursor.execute('''INSERT INTO enrollment_data (subject_id, eye_side, image_path)
-                      VALUES (?, ?, ?)''', (subject_id, eye_side, image_path))
-    conn.commit()
-
-# Fonction pour insérer des données dans la table de reconnaissance
-def insert_recognition_data(subject_id, eye_side, image_path):
-    cursor.execute('''INSERT INTO recognition_data (subject_id, eye_side, image_path)
-                      VALUES (?, ?, ?)''', (subject_id, eye_side, image_path))
-    conn.commit()
-
-# Insérer les données
-for folder_name in os.listdir(image_folder):
-    if os.path.isdir(os.path.join(image_folder, folder_name)):
-        for side in ['left', 'right']:
-            for image_name in os.listdir(os.path.join(image_folder, folder_name, side)):
-                insert_data(folder_name, side, os.path.join(image_folder, folder_name, side, image_name))
-
-# Récupération du nombre total d'enregistrements dans la table data
-cursor.execute('''SELECT COUNT(*) FROM data''')
-data_count = cursor.fetchone()[0]
-
-# Division des données en ensembles d'enrôlement et de reconnaissance
-enrollment_count = int(data_count * 0.7)  # 70% pour l'enrôlement
-recognition_count = data_count - enrollment_count  # 30% pour la reconnaissance
-
-# Récupération des données d'enrôlement et de reconnaissance
-cursor.execute('''SELECT * FROM data''')
-data = cursor.fetchall()
-
-# Séparation des ensembles
-random.shuffle(data)
-enrollment_set = data[:enrollment_count]
-recognition_set = data[enrollment_count:]
-
-# Insertion des données d'enrôlement
-for enrollment_data in enrollment_set:
-    insert_enrollment_data(enrollment_data[1], enrollment_data[2], enrollment_data[3])
-
-# Insertion des données de reconnaissance
-for recognition_data in recognition_set:
-    insert_recognition_data(recognition_data[1], recognition_data[2], recognition_data[3])
-
-# Fermer la connexion à la base de données
+# Commit des modifications et fermeture de la connexion
+conn.commit()
 conn.close()
+
+print("Données insérées dans la base de données SQLite.")
+
+def load_image_from_database(iris_id, side, n_pos):
+    """Charger une image à partir de la base de données."""
+    conn = sqlite3.connect("iris_database.db")
+    cursor = conn.cursor()
+    cursor.execute('''SELECT image_path FROM iris_data WHERE iris_id=? AND side=? AND n_pos=?''', (iris_id, "left" if side == "L" else "right", n_pos))
+    row = cursor.fetchone()
+    if row:
+        image_path = row[0]
+        image = cv2.imread(image_path)
+        conn.close()
+        return image
+    else:
+        print("Aucune image correspondante trouvée dans la base de données.")
+        conn.close()
+        return None
