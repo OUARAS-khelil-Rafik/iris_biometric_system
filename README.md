@@ -61,7 +61,7 @@ Khelil Rafik OUARAS (@OUARAS-khelil-Rafik)
 <img src="Screenshots/UPLOAD File.png"  height="800" />
 
 ### Detected SIFT Image 01 et 02 (Exemple)
-<img src="Screenshots/DetectedSIFT1.png"  height="450" /> <img src="Screenshots/DetectedSIFT2.png"  height="450" />
+<img src="Screenshots/DetectedSIFT1.png"  height="400" /> <img src="Screenshots/DetectedSIFT2.png"  height="400" />
 
 ### Matching rate results
 <img src="Screenshots/Matching rate results.png"  height="800" />
@@ -75,9 +75,9 @@ Khelil Rafik OUARAS (@OUARAS-khelil-Rafik)
 The verification process involves using BFMatcher "Distance euclidienne" image matching library. The image of the user's IRIS captured live during the verification screening is fed through the method match_images(), along with the registered captured IRIS with the ID the user inputted. If there is a match using BFMatcher "brute force matching", the user input information will be displayed in a dialog box (new frame). The match_rate conditional statement will have to be adjusted based on what video capture system is used. For stronger cameras, a match rate greater then 50% will work. For weaker camera devices such as a wireless webcam, a lower value such as 35% should be considered.
 
 <div style="display: flex; justify-content: center;">
-    <img src="Screenshots/Matching rate results (exemple Images matching).png"  height="300" />
+    <img src="Screenshots/Matching rate results (exemple Images matching).png"  height="400" />
 </div>
 
 <div style="display: flex; justify-content: center;">
-<img src="Screenshots/Matching rate results (exemple Images do not match).png"  height="300" />
+<img src="Screenshots/Matching rate results (exemple Images do not match).png"  height="400" />
 </div>
