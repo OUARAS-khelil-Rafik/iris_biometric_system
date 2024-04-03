@@ -17,4 +17,39 @@ This project aims to develop a biometric system for individual identification us
 ### Installation Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your_username/iris_biometric_system.git
+   git clone https://github.com/OUARAS-khelil-Rafik/iris_biometric_system.git
+
+2. Navigate to the project directory:
+   ```bash
+   cd iris_biometric_system
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+4. Run the application:
+   ```bash
+   python src/main.py
+
+## Usage
+- Launch the application using python src/main.py.
+- Upload an iris image using the "Upload Iris" button.
+- Follow the on-screen instructions to view the matching result.
+
+## Contributors
+Khelil Rafik OUARAS (@OUARAS-khelil-Rafik)
+
+## environment.txt
+- pip=24.0
+- python=3.12.2
+- sqlite3=3.43.1
+- tkinter=8.6
+- PIL=10.2.0
+
+## requirements.txt
+- numpy==1.26.3
+- opencv-python==4.9.0.80
+- imageio==2.34.0
+- Pillow==10.2.0
+- tk==0.1.0
+- matplotlib==3.8.3
