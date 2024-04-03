@@ -1,6 +1,6 @@
 numpy==1.26.3
 opencv-python==4.9.0.80
 imageio==2.34.0
-Pillow==10.2.0
+Pillow==10.3.0
 tk==0.1.0
 matplotlib==3.8.3
