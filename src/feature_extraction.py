@@ -17,4 +17,11 @@ def extract_features(image1, image2):
     imageio.imwrite('DetectedSIFT1.png', img_with_keypoints1)
     imageio.imwrite('DetectedSIFT2.png', img_with_keypoints2)
     
+    # Afficher les images
+    cv2.imshow("Detected SIFT 1", img_with_keypoints1)
+    cv2.waitKey(0) # maintenir la fenêtre
+
+    cv2.imshow("Detected SIFT 2", img_with_keypoints2)
+    cv2.waitKey(0) # maintenir la fenêtre
+    
     return keypoints1, descriptors1, keypoints2, descriptors2

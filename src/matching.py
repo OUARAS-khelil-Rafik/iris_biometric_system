@@ -16,6 +16,8 @@ def match_images(image1, keypoints1, descriptors1, image2, keypoints2, descripto
 
     # Calculer le taux de correspondance en pourcentage
     matching_rate = len(matches) / min(len(keypoints1), len(keypoints2)) * 100
+    
+    display_matched_image(matched_image, matching_rate)
 
     return matching_rate, matched_image
 
