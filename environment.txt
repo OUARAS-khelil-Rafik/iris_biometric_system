@@ -1,1 +1,5 @@
-
+pip=24.0
+python=3.12.2
+sqlite3=3.43.1
+tkinter=8.6
+PIL=10.2.0
