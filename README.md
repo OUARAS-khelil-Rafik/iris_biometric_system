@@ -11,7 +11,7 @@ This project aims to develop a biometric system for individual identification us
 - Provides a graphical user interface for user interaction.
 
 ### Architecture of a biometric recognition system
-<img src="Screenshots/Architecture of a biometric recognition system.jpeg"  height="350" />
+<img src="Screenshots/Architecture of a biometric recognition system.png"  height="350" />
 
 ## Installation
 
