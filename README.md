@@ -10,6 +10,9 @@ This project aims to develop a biometric system for individual identification us
 - Matches iris images using Euclidean distance.
 - Provides a graphical user interface for user interaction.
 
+### Architecture of a biometric recognition system
+<img src="Screenshots/Architecture of a biometric recognition system.jpng"  height="800" />
+
 ## Installation
 
 ### Prerequisites
