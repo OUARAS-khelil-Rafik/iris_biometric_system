@@ -20,19 +20,34 @@ This project aims to develop a biometric system for individual identification us
 - Pip package manager installed
 
 ### Installation Steps
-1. Clone the repository:
+1. Install "Git" :
+In Windows :
+🔗Link :
+   ```bash
+   https://github.com/git-for-windows/git/releases/download/v2.45.0.windows.1/Git-2.45.0-64-bit.exe
+
+Using winget tool
+Install winget tool if you don't already have it, then type this command in command prompt or Powershell.
+   ```bash
+   winget install --id Git.Git -e --source winget
+
+In Linux :
+   ```bash
+   sudo apt install git-all
+
+3. Clone the repository:
    ```bash
    git clone https://github.com/OUARAS-khelil-Rafik/iris_biometric_system.git
 
-2. Navigate to the project directory:
+4. Navigate to the project directory:
    ```bash
    cd iris_biometric_system
 
-3. Install dependencies:
+5. Install dependencies:
    ```bash
    pip install -r requirements.txt
 
-4. Run the application:
+6. Run the application:
    ```bash
    python src/main.py
 
