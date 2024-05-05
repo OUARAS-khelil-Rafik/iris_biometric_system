@@ -21,6 +21,7 @@ This project aims to develop a biometric system for individual identification us
 
 ### Installation Steps
 **1. Install "Git" :**
+
 Windows :
 ```
 https://github.com/git-for-windows/git/releases/download/v2.45.0.windows.1/Git-2.45.0-64-bit.exe
